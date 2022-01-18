@@ -1,8 +1,13 @@
 
 <script>
+    import supabase from '$lib/db'
     import Header from '../components/header.svelte'
+    import {signOut} from '$lib/services'
+    import { session } from '$app/stores';
+
+    
 </script>
-<main>
-    <Header />
-<h1>Home/Index</h1>
-</main>
+
+<Header />
+<h1>Logged in as {$session.user.email}</h1>
+<button on:click={signOut}>Log Out</button>

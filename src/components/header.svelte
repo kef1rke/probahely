@@ -1,6 +1,7 @@
 <script>
-    import A from '../components/a.svelte'
-    
+    import Button from '../components/button.svelte'
+    import {session} from '$app/stores'
+    import {signOut} from '$lib/services'
 </script>
 
 <header class="text-gray-600 body-font">
@@ -16,6 +17,13 @@
         <a href="/" class="mr-5 hover:text-gray-900">Kapcsolat</a>
         <a href="/idopontfoglalas" class="mr-5 hover:text-gray-900">Időpontfoglalás</a>
       </nav>
-      <A href="/login">Bejelentkezés</A>
+      {#if $session}
+        <button class="text-white bg-gray-500 border-0 py-2 px-8 focus:outline-none hover:bg-gray-400 rounded text-lg" on:click={signOut}>LogOut</button>
+      {:else}
+        <Button href="/login">Bejelentkezés</Button>
+      {/if}
     </div>
   </header>
+
+
+  
