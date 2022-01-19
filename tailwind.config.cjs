@@ -6,8 +6,7 @@ const config = {
 	},
 
 	plugins: [
-		require('daisyui', 'tw-elements/dist/plugin'),
-		//require('tw-elements/dist/plugin'),
+		require('tw-elements/dist/plugin'),
 	]
 };
 

@@ -1,5 +1,6 @@
 <script>
 	import '../app.css';
+	import 'tw-elements';
 	import {session} from '$app/stores'
 	import supabase from '$lib/db'
 	import {browser} from '$app/env'
