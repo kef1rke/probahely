@@ -1,7 +1,18 @@
 <script>
 	import Header from '../components/header.svelte';
 	import { onMount } from 'svelte';
+	import TimePicker from 'svelte-time-picker';
 	onMount(() => import('tw-elements'));
+
+	let date;
+	let clockOptions = {
+		is24h: true,
+		hasButtons: true
+	};
+	let myCallback = (event) => {
+		date = event.detail;
+		// ...
+	};
 </script>
 
 <Header />
@@ -24,3 +35,9 @@
 		</button>
 	</div>
 </div>
+
+<TimePicker class="" options={clockOptions} on:change={myCallback} />
+
+{#if date}
+	<h2>{date}</h2>
+{/if}
