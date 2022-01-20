@@ -19,6 +19,3 @@
 </script>
 
 <slot />
-<pre>
-	{JSON.stringify($session, null, 2)}
-</pre>
