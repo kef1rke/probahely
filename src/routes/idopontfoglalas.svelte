@@ -1,18 +1,13 @@
 <script>
 	import Header from '../components/header.svelte';
 	import { onMount } from 'svelte';
-	import TimePicker from 'svelte-time-picker';
+
+	import Clock from './clock.svelte';
 	onMount(() => import('tw-elements'));
 
 	let date;
-	let clockOptions = {
-		is24h: true,
-		hasButtons: true
-	};
-	let myCallback = (event) => {
-		date = event.detail;
-		// ...
-	};
+
+	let clock;
 </script>
 
 <Header />
@@ -26,6 +21,7 @@
 		/>
 		<label for="floatingInput" class="text-gray-700">Select a time</label>
 		<button
+			on:click={() => clock.show()}
 			tabindex="0"
 			type="button"
 			class="timepicker-toggle-button"
@@ -36,7 +32,7 @@
 	</div>
 </div>
 
-<TimePicker class="" options={clockOptions} on:change={myCallback} />
+<Clock bind:this={clock} />
 
 {#if date}
 	<h2>{date}</h2>
