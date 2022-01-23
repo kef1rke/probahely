@@ -19,8 +19,8 @@
 </script>
 
 {#if shown}
-	<div class="">
-		<div class="">
+	<div class="bg-black opacity-60 fixed w-full h-full top-0 left-0">
+		<div class="inset-y-1/2">
 			<TimePicker options={myOptions} />
 		</div>
 	</div>

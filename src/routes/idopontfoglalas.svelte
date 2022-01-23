@@ -2,12 +2,11 @@
 	import Header from '../components/header.svelte';
 	import { onMount } from 'svelte';
 
-	import Clock from './clock.svelte';
+	let date
+	
 	onMount(() => import('tw-elements'));
-
-	let date;
-
-	let clock;
+	import ModalClock from '../components/modalClock.svelte';
+	let showmodal = false // toggles the hide/show modal mode
 </script>
 
 <Header />
@@ -21,7 +20,7 @@
 		/>
 		<label for="floatingInput" class="text-gray-700">Select a time</label>
 		<button
-			on:click={() => clock.show()}
+			on:click={() =>showmodal.show()}
 			tabindex="0"
 			type="button"
 			class="timepicker-toggle-button"
@@ -32,7 +31,7 @@
 	</div>
 </div>
 
-<Clock bind:this={clock} />
+<ModalClock bind:this={showmodal} />
 
 {#if date}
 	<h2>{date}</h2>
