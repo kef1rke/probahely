@@ -8,6 +8,7 @@
 
 	let show = false; // menu state
 	let menu = null; // menu wrapper DOM reference
+	let zenekar_nev;
 
 	onMount(() => {
 		const handleOutsideClick = (event) => {
@@ -22,7 +23,10 @@
 			}
 		};
 
-		// add events when element is added to the DOM
+		async function getData() {
+			const { data, error } = await supabase.from('users').select('zenesz_nev');
+			zenekar_nev = data;
+		} // add events when element is added to the DOM
 		document.addEventListener('click', handleOutsideClick, false);
 		document.addEventListener('keyup', handleEscape, false);
 
@@ -84,6 +88,7 @@
 							class="origin-top-right absolute right-0 w-48 py-2 mt-1 bg-gray-800
           rounded shadow-md"
 						>
+							<h3>{zenekar_nev}</h3>
 							<button href="/profile" class="block w-full text-white px-4 py-2 hover:bg-gray-500 "
 								>Profile</button
 							>

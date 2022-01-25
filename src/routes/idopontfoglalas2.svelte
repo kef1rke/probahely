@@ -1,7 +1,6 @@
 <script>
 	import Header from '../components/header.svelte';
 	import supabase from '$lib/db';
-	import { session } from '$app/stores';
 
 	let userData;
 	let date;
@@ -10,7 +9,6 @@
 
 	async function getData(e) {
 		const { data, error } = await supabase.from('users').select(e);
-		console.log(data);
 	}
 
 	async function createFoglalas() {
@@ -18,9 +16,7 @@
 			{
 				foglalas_date: date,
 				foglalas_tol: foglalas_tol,
-				foglalas_ig: foglalas_ig,
-				zenekar_id: getData('zenekar_id'),
-				user_id: getData('id')
+				foglalas_ig: foglalas_ig
 			}
 		]);
 	}
@@ -37,4 +33,4 @@
 
 <h2>{date}, {foglalas_tol}, {foglalas_ig}</h2>
 
-<button on:click={getData()}>Get data</button>
+<button on:click={getData}>Get data</button>
