@@ -11,20 +11,14 @@
 	const user = supabase.auth.user();
 	//const zenekar_id = supabase.from('users').select('id, zenekar_id(zenekar_nev)');
 
-	async function getData() {
-		const { data, error } = await supabase.from('users').select('id');
-		return data[0].id;
+	async function getZenesz() {
+		const { data, error } = await supabase.from('users').select('zenekar_id');
+		return data[0].zenekar_id;
 	}
 
 	////////////////
 	async function test() {
-		const { data, error } = await supabase.from('users').select('id');
-		let e = data[0].id;
-		return e;
-	}
-
-	async function enter() {
-		console.log(await test());
+		console.log(await getZenesz());
 	}
 	//////////////
 	async function createFoglalas() {
@@ -34,9 +28,11 @@
 				foglalas_tol: foglalas_tol,
 				foglalas_ig: foglalas_ig,
 				user_id: user.id,
-				zenekar_id: 1
+				zenekar_id: await getZenesz(),
+				foglalas_tipus: true
 			}
 		]);
+		//console.log(date, foglalas_tol, foglalas_ig, user.id, await getZenesz());
 	}
 </script>
 
@@ -51,4 +47,4 @@
 
 <h2>{date}, {foglalas_tol}, {foglalas_ig}</h2>
 <h2>{user}</h2>
-<button on:click={enter}>Get current user</button>
+<button on:click={getZenesz}>Get current user</button>
