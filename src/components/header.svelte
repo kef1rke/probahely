@@ -26,7 +26,9 @@
 		async function getData() {
 			const { data, error } = await supabase.from('users').select('zenesz_nev');
 			zenekar_nev = data;
-		} // add events when element is added to the DOM
+		}
+
+		// add events when element is added to the DOM
 		document.addEventListener('click', handleOutsideClick, false);
 		document.addEventListener('keyup', handleEscape, false);
 

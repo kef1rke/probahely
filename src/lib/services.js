@@ -18,5 +18,5 @@ export async function createZenekarAsAdmin() {
 // What is my band's name
 export async function whatIsMyBandsName() {
 	const { data, error } = await supabase.from('users').select('id, zenekar_id(zenekar_nev)');
-	console.log(data, error.message);
+	return data, error.message;
 }
