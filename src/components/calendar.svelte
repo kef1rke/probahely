@@ -1,28 +1,33 @@
 <script>
 	import { onMount } from 'svelte';
 	import FullCalendar from 'svelte-fullcalendar';
+	import supabase from '$lib/db';
 
-	// Replace events with your json or api
-	let events = [{ title: 'Event Now', start: new Date() }];
+	async function getJson(fetchInfo, successCallback, errorCallback) {
+		console.log(fetchInfo);
+		const { data, error } = await supabase
+			.from('Foglalasok')
+			.select('date:foglalas_date,title:foglalas_tol');
+		return data;
+	}
 
-	let options = {
-		initialView: 'dayGridMonth',
-		plugins: [],
-		locale: 'en',
-		headerToolbar: {
-			left: 'prev,next today',
-			center: 'title',
-			right: 'dayGridMonth,timeGridWeek,timeGridDay'
-		},
-		// dateClick: (event) => alert("se le dio click", event.dateStr ),
-		selectable: true,
-		events
-	};
+	let options;
 
 	onMount(async () => {
 		const common = (await import('@fullcalendar/common')).default;
 		options = {
-			...options,
+			initialView: 'dayGridMonth',
+			plugins: [],
+			locale: 'hun',
+			headerToolbar: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'dayGridMonth,timeGridWeek,timeGridDay'
+			},
+
+			//dateClick: (event) => alert('se le dio click', event.dateStr),
+			selectable: true,
+			events: getJson,
 			plugins: [
 				(await import('@fullcalendar/daygrid')).default,
 				(await import('@fullcalendar/timegrid')).default,
@@ -31,6 +36,10 @@
 		};
 	});
 </script>
+
+<!-- <button on:click={getEvents}>Get events</button>
+<button on:click={getJsonLog}>Get json</button>
+<button on:click={getOptions}>Get options</button> -->
 
 <section class="py-8">
 	<div class="container px-4 mx-auto">
@@ -41,9 +50,7 @@
 			</div>
 			<div class="relative h-3/4">
 				<div class="relative ">
-					{#if events.length > 0}
-						<FullCalendar {options} />
-					{/if}
+					<FullCalendar {options} />
 				</div>
 			</div>
 		</div>

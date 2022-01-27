@@ -17,9 +17,7 @@
 	}
 
 	////////////////
-	async function test() {
-		console.log(await getZenesz());
-	}
+
 	//////////////
 	async function createFoglalas() {
 		const { data, error } = await supabase.from('Foglalasok').insert([
@@ -44,7 +42,3 @@
 <h3>ig</h3>
 <input type="time" bind:value={foglalas_ig} />
 <button on:click={createFoglalas}>Foglalás</button>
-
-<h2>{date}, {foglalas_tol}, {foglalas_ig}</h2>
-<h2>{user}</h2>
-<button on:click={getZenesz}>Get current user</button>
