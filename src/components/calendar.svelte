@@ -2,16 +2,22 @@
 	import { onMount } from 'svelte';
 	import FullCalendar from 'svelte-fullcalendar';
 	import supabase from '$lib/db';
+	import Modal from '../components/modal.svelte';
 
 	async function getJson(fetchInfo, successCallback, errorCallback) {
-		console.log(fetchInfo);
 		const { data, error } = await supabase
 			.from('Foglalasok')
-			.select('date:foglalas_date,title:foglalas_tol');
+			.select('date:foglalas_date,title:Zenekarok(zenekar_nev)');
 		return data;
 	}
 
 	let options;
+	$: isThereModal = false;
+
+	export function noModal() {
+		isThereModal = false;
+		console.log(isThereModal);
+	}
 
 	onMount(async () => {
 		const common = (await import('@fullcalendar/common')).default;
@@ -24,6 +30,18 @@
 				center: 'title',
 				right: 'dayGridMonth,timeGridWeek,timeGridDay'
 			},
+
+			firstDay: 1,
+			buttonText: {
+				today: 'Ma',
+				month: 'Hónap',
+				week: 'Hét',
+				day: 'Nap'
+			},
+			eventClick: function (info) {
+				isThereModal = true;
+			},
+			function(mouseEnterInfo) {},
 
 			//dateClick: (event) => alert('se le dio click', event.dateStr),
 			selectable: true,
@@ -56,3 +74,6 @@
 		</div>
 	</div>
 </section>
+{#if isThereModal}
+	<Modal />
+{/if}
