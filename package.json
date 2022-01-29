@@ -31,7 +31,6 @@
 		"@fullcalendar/daygrid": "^5.10.1",
 		"@fullcalendar/list": "^5.10.1",
 		"@fullcalendar/timegrid": "^5.10.1",
-		"@kahi-ui/framework": "^0.5.5",
 		"angular": "^1.8.2",
 		"cookie": "^0.4.1",
 		"daisyui": "^1.21.0",

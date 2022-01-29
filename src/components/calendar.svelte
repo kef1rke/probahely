@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import FullCalendar from 'svelte-fullcalendar';
 	import supabase from '$lib/db';
-
 	// data from database
 	async function getJson(fetchInfo, successCallback, errorCallback) {
 		const { data, error } = await supabase
@@ -16,7 +15,6 @@
 	}
 	// fullcalendar options
 	let options;
-
 	onMount(async () => {
 		const common = (await import('@fullcalendar/common')).default;
 		options = {
@@ -28,7 +26,6 @@
 				center: 'title',
 				right: 'dayGridMonth,timeGridWeek,timeGridDay'
 			},
-
 			firstDay: 1,
 			buttonText: {
 				today: 'Ma',
@@ -40,7 +37,6 @@
 				isThereModal = true;
 			},
 			function(mouseEnterInfo) {},
-
 			dateClick: (event) => alert('hey'),
 			selectable: true,
 			events: getJson,

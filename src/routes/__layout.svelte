@@ -1,6 +1,5 @@
 <script>
 	import '../app.css';
-
 	import { session } from '$app/stores';
 	import supabase from '$lib/db';
 	import { browser } from '$app/env';
@@ -10,7 +9,6 @@
 		if ($session == null) {
 			goto('/login');
 		}
-
 		supabase.auth.onAuthStateChange((event, sesh) => {
 			$session = sesh;
 			setTimeout(() => ($session ? goto('/home') : goto('/login')));
