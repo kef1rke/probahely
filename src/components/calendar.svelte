@@ -2,22 +2,20 @@
 	import { onMount } from 'svelte';
 	import FullCalendar from 'svelte-fullcalendar';
 	import supabase from '$lib/db';
-	import Modal from '../components/modal.svelte';
 
+	// data from database
 	async function getJson(fetchInfo, successCallback, errorCallback) {
 		const { data, error } = await supabase
 			.from('Foglalasok')
-			.select('date:foglalas_date,title:Zenekarok(zenekar_nev)');
+			.select('date:foglalas_date, title:zenekar_id, foglalas_tol')
+			.order('foglalas_tol', { ascending: true });
 		return data;
 	}
-
-	let options;
-	$: isThereModal = false;
-
-	export function noModal() {
-		isThereModal = false;
-		console.log(isThereModal);
+	async function getJsonData() {
+		console.log(await getJson());
 	}
+	// fullcalendar options
+	let options;
 
 	onMount(async () => {
 		const common = (await import('@fullcalendar/common')).default;
@@ -43,7 +41,7 @@
 			},
 			function(mouseEnterInfo) {},
 
-			//dateClick: (event) => alert('se le dio click', event.dateStr),
+			dateClick: (event) => alert('hey'),
 			selectable: true,
 			events: getJson,
 			plugins: [
@@ -55,9 +53,9 @@
 	});
 </script>
 
-<!-- <button on:click={getEvents}>Get events</button>
-<button on:click={getJsonLog}>Get json</button>
-<button on:click={getOptions}>Get options</button> -->
+<!-- <button on:click={getEvents}>Get events</button> -->
+<button on:click={getJsonData}>Get json</button>
+<!-- <button on:click={getOptions}>Get options</button> -->
 
 <section class="py-8">
 	<div class="container px-4 mx-auto">
@@ -74,6 +72,3 @@
 		</div>
 	</div>
 </section>
-{#if isThereModal}
-	<Modal />
-{/if}

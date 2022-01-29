@@ -1,7 +1,6 @@
 <script>
 	import Header from '../components/header.svelte';
 	import supabase from '$lib/db';
-	import { session } from '$app/stores';
 
 	let userData;
 	let date;
@@ -41,4 +40,5 @@
 <input type="time" bind:value={foglalas_tol} />
 <h3>ig</h3>
 <input type="time" bind:value={foglalas_ig} />
+<h3>Zenekar</h3>
 <button on:click={createFoglalas}>Foglalás</button>
