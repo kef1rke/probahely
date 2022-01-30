@@ -1,6 +1,6 @@
 <script>
 	import supabase from '$lib/db';
-	import Input from '../components/input.svelte';
+
 	import { session } from '$app/stores';
 	import Header from '../components/header.svelte';
 	let email, password;

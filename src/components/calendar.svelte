@@ -1,18 +1,24 @@
 <script>
 	import { onMount } from 'svelte';
-	import FullCalendar from 'svelte-fullcalendar';
+	import FullCalendar, { getEventClassNames } from 'svelte-fullcalendar';
 	import supabase from '$lib/db';
+	import Modal from '../components/modal.svelte';
+
+	let modal;
 	// data from database
 	async function getJson(fetchInfo, successCallback, errorCallback) {
 		const { data, error } = await supabase
 			.from('Foglalasok')
-			.select('date:foglalas_date, title:zenekar_id, foglalas_tol')
+			.select('date:foglalas_date, title:zenekar_id')
 			.order('foglalas_tol', { ascending: true });
 		return data;
 	}
 	async function getJsonData() {
-		console.log(await getJson());
+		console.log(await selectedDate);
 	}
+
+	export let selectedDate;
+	let eventsInColumn = null;
 	// fullcalendar options
 	let options;
 	onMount(async () => {
@@ -33,11 +39,21 @@
 				week: 'Hét',
 				day: 'Nap'
 			},
-			eventClick: function (info) {
-				isThereModal = true;
+			eventClick: function () {
+				modal.show();
 			},
-			function(mouseEnterInfo) {},
-			dateClick: (event) => alert('hey'),
+
+			//function(mouseEnterInfo) {},
+			dateClick: async (event) => {
+				selectedDate = await event.dateStr;
+				const { data, error } = await supabase
+					.from('Foglalasok')
+					.select('foglalas_tol, foglalas_ig')
+					.eq('foglalas_date', selectedDate)
+					.order('foglalas_tol', { ascending: true });
+				eventsInColumn = data;
+				modal.show(selectedDate);
+			},
 			selectable: true,
 			events: getJson,
 			plugins: [
@@ -68,3 +84,21 @@
 		</div>
 	</div>
 </section>
+
+<Modal bind:this={modal}>
+	{#if eventsInColumn.length != 0}
+		<h2 class="text-center mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+			Foglalások erre a napra:
+		</h2>
+	{:else}
+		<h2 class="text-center mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+			Nincs foglalás {selectedDate}
+		</h2>
+	{/if}
+
+	{#each eventsInColumn as data}
+		<h3 class="text-center mb-1 font-normal text-gray-700 ">
+			{data.foglalas_tol} - {data.foglalas_ig}
+		</h3>
+	{/each}
+</Modal>
