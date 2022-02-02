@@ -20,21 +20,10 @@
 
 	export let selectedDate;
 	let eventsInColumn = null;
+
 	// fullcalendar options
 	let options;
 	let date;
-	async function foglalas(event) {
-		selectedDate = await event.dateStr;
-		const { data, error } = await supabase
-			.from('Foglalasok')
-			.select('foglalas_tol, foglalas_ig')
-			.eq('foglalas_date', selectedDate)
-			.order('foglalas_tol', { ascending: true });
-		eventsInColumn = data;
-		isOpen = true;
-		date = selectedDate;
-		console.log(await date);
-	}
 	onMount(async () => {
 		const common = (await import('@fullcalendar/common')).default;
 		options = {
@@ -70,7 +59,17 @@
 	});
 
 	//foglalás
-
+	async function foglalas(event) {
+		selectedDate = await event.dateStr;
+		const { data, error } = await supabase
+			.from('Foglalasok')
+			.select('foglalas_tol, foglalas_ig')
+			.eq('foglalas_date', selectedDate)
+			.order('foglalas_tol', { ascending: true });
+		eventsInColumn = data;
+		isOpen = true;
+		date = selectedDate;
+	}
 	let foglalas_tol;
 	let foglalas_ig;
 	let zenekari_foglalas = false;
@@ -82,7 +81,6 @@
 		if (!(foglalas_tol < foglalas_ig)) {
 			foglalasError = 'Érvényes időintervallumot adjon meg!';
 		}
-
 		if (foglalasError == null) {
 			const { data, error } = await supabase.from('Foglalasok').insert([
 				{
