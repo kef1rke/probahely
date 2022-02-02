@@ -1,30 +1,15 @@
 <script>
-	import supabase from '$lib/db';
-	import selectedDate from '../components/calendar.svelte';
-	let shown = false;
-	let event;
-	let date;
-
-	export function getEvent() {}
-	export function show(selectedDate) {
-		shown = true;
-		date = selectedDate;
-	}
-	export function hide() {
-		shown = false;
-	}
-
-	//foglalás
+	export let isOpen;
 </script>
 
 <svelte:window
 	on:keydown={(e) => {
 		if (e.keyCode == 27) {
+			isOpen = false;
 		}
-		hide();
 	}}
 />
-{#if shown}
+{#if isOpen}
 	<div
 		class="bg-gray-500 bg-opacity-60 fixed right-0 left-0 z-50 justify-center items-center md:inset-0 h-modal sm:h-full"
 	>
@@ -34,7 +19,7 @@
 				<!-- Modal header -->
 				<div class="flex justify-end p-2">
 					<button
-						on:click={() => hide()}
+						on:click={() => (isOpen = false)}
 						type="button"
 						class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
 					>
@@ -54,8 +39,6 @@
 				<!-- Modal body -->
 				<div class="p-6 pt-0 ">
 					<slot />
-
-					<slot name="form" />
 				</div>
 			</div>
 		</div>
