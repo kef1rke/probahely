@@ -1,0 +1,25 @@
+@use 'sass:color';
+
+@use '@material/theme/color-palette';
+
+// Svelte Colors!
+@use '@material/theme/index' as theme with (
+	$primary: color-palette.$indigo-400,
+	$secondary: color-palette.$blue-grey-400,
+	$surface: #fff,
+	$background: #fff,
+	$error: color-palette.$red-900
+);
+
+html,
+body {
+	background-color: theme.$surface;
+	color: theme.$on-surface;
+}
+
+a {
+	color: #7b8c97;
+}
+a:visited {
+	color: color.scale(#7b8c97, $lightness: -35%);
+}
