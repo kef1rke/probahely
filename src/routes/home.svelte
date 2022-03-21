@@ -9,6 +9,4 @@
 	}
 </script>
 
-<Header />
-
 <Calendar />

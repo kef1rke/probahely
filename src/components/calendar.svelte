@@ -85,7 +85,7 @@
 					foglalas_tol: foglalas_tol,
 					foglalas_ig: foglalas_ig,
 					user_id: user.id,
-					zenekar_id: await getZenesz(),
+					zenekar_id: await getZenekarid(),
 					zenekari_foglalas: zenekari_foglalas
 				}
 			]);
@@ -93,7 +93,7 @@
 		}
 	}
 
-	async function getZenesz() {
+	async function getZenekarid() {
 		const { data, error } = await supabase.from('users').select('zenekar_id');
 		return data[0].zenekar_id;
 	}

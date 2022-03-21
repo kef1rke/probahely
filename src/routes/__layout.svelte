@@ -4,6 +4,7 @@
 	import supabase from '$lib/db';
 	import { browser } from '$app/env';
 	import { goto } from '$app/navigation';
+	import Header from '../components/header.svelte';
 
 	if (browser) {
 		$session = supabase.auth.session();
@@ -17,4 +18,7 @@
 	}
 </script>
 
-<slot />
+<div class="bg-gray-200">
+	<Header />
+	<slot />
+</div>

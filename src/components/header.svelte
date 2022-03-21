@@ -8,7 +8,6 @@
 
 	let show = false; // menu state
 	let menu = null; // menu wrapper DOM reference
-	let zenekar_nev;
 
 	onMount(() => {
 		const handleOutsideClick = (event) => {
@@ -22,11 +21,6 @@
 				show = false;
 			}
 		};
-
-		async function getData() {
-			const { data, error } = await supabase.from('users').select('zenesz_nev');
-			zenekar_nev = data;
-		}
 
 		// add events when element is added to the DOM
 		document.addEventListener('click', handleOutsideClick, false);
@@ -71,15 +65,10 @@
 						on:click={() => (show = !show)}
 						class="menu focus:outline-none focus:shadow-solid"
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							stroke="currentColor"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							class="w-10 h-10 text-white p-2 bg-gray-500 rounded-full"
-							viewBox="0 0 24 24"
+						<img
+							class="w-10 rounded-full"
+							src="https://avatars.githubusercontent.com/u/67946056?v=4"
+							alt=""
 						/></button
 					>
 
@@ -90,9 +79,8 @@
 							class="origin-top-right absolute right-0 w-48 py-2 mt-1 bg-gray-800
           rounded shadow-md"
 						>
-							<h3>{zenekar_nev}</h3>
-							<button href="/profile" class="block w-full text-white px-4 py-2 hover:bg-gray-500 "
-								>Profile</button
+							<button class="block w-full text-white px-4 py-2 hover:bg-gray-500 "
+								><a href="/profile">Profile</a></button
 							>
 							<button
 								on:click={signOut}
