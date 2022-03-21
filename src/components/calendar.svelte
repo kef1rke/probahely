@@ -10,7 +10,7 @@
 	async function getJson(fetchInfo, successCallback, errorCallback) {
 		const { data, error } = await supabase
 			.from('Foglalasok')
-			.select('date:foglalas_date, title:zenekar_id')
+			.select('date:foglalas_date, title:foglalo_nev')
 			.order('foglalas_tol', { ascending: true });
 		return data;
 	}
@@ -60,7 +60,7 @@
 		selectedDate = await event.dateStr;
 		const { data, error } = await supabase
 			.from('Foglalasok')
-			.select('foglalas_tol, foglalas_ig')
+			.select('foglalas_tol, foglalas_ig, foglalo_nev')
 			.eq('foglalas_date', selectedDate)
 			.order('foglalas_tol', { ascending: true });
 		eventsInColumn = data;
@@ -86,7 +86,8 @@
 					foglalas_ig: foglalas_ig,
 					user_id: user.id,
 					zenekar_id: await getZenekarid(),
-					zenekari_foglalas: zenekari_foglalas
+					zenekari_foglalas: zenekari_foglalas,
+					foglalo_nev: await getFoglaloNev()
 				}
 			]);
 			isOpen = false;
@@ -96,6 +97,15 @@
 	async function getZenekarid() {
 		const { data, error } = await supabase.from('users').select('zenekar_id');
 		return data[0].zenekar_id;
+	}
+	async function getFoglaloNev() {
+		if (zenekari_foglalas == true) {
+			const { data, error } = await supabase.from('Zenekarok').select('zenekar_nev');
+			return data[0].zenekar_nev;
+		} else {
+			const { data, error } = await supabase.from('users').select('zenesz_nev');
+			return data[0].zenesz_nev;
+		}
 	}
 </script>
 
@@ -131,7 +141,7 @@
 
 	{#each eventsInColumn as data}
 		<h3 class="text-center mb-1 font-normal text-gray-700 ">
-			{data.foglalas_tol} - {data.foglalas_ig}
+			{data.foglalo_nev}: {data.foglalas_tol} - {data.foglalas_ig}
 		</h3>
 	{/each}
 
