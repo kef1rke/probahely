@@ -14,9 +14,6 @@
 			.order('foglalas_tol', { ascending: true });
 		return data;
 	}
-	async function getJsonData() {
-		console.log(await selectedDate);
-	}
 
 	export let selectedDate;
 	let eventsInColumn = null;
@@ -101,10 +98,6 @@
 		return data[0].zenekar_id;
 	}
 </script>
-
-<!-- <button on:click={getEvents}>Get events</button> -->
-<button on:click={getJsonData}>Get json</button>
-<!-- <button on:click={getOptions}>Get options</button> -->
 
 <section class="py-8">
 	<div class="container px-4 mx-auto">
