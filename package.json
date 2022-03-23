@@ -37,6 +37,7 @@
 		"fullcalendar": "^5.10.1",
 		"postcss": "^8.4.5",
 		"svelte-fullcalendar": "^1.1.2",
+		"svelte-navigator": "^3.1.5",
 		"tw-elements": "^1.0.0-alpha8",
 		"typescript": "^4.5.5"
 	}

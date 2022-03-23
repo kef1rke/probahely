@@ -13,6 +13,7 @@
 	async function getZenekarNev() {
 		const { data, error } = await supabase.from('users').select('Zenekarok(zenekar_nev)');
 		zenekarNev = data[0].Zenekarok.zenekar_nev;
+		console.log(zenekarNev);
 	}
 	onMount(() => {
 		getUserData();

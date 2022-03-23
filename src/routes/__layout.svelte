@@ -18,7 +18,7 @@
 	}
 </script>
 
-<div class="bg-gray-200">
+<div class="h-screen bg-gray-200">
 	<Header />
 	<slot />
 </div>

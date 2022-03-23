@@ -8,5 +8,3 @@
 		selection = res;
 	}
 </script>
-
-<Calendar />

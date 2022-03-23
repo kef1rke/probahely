@@ -6,5 +6,3 @@
 	import ModalClock from '../components/modalClock.svelte';
 	let showModal = true; // toggles the hide/show modal mode
 </script>
-
-<Header />
