@@ -52,7 +52,6 @@
 	<div class="row">
 		<div class="col-sm-12">
 			<div class="p-2">
-				<h1>{selected.page}</h1>
 				<!-- this is where our main content is placed -->
 				<svelte:component this={selected.component} />
 			</div>

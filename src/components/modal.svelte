@@ -13,9 +13,9 @@
 	<div
 		class="bg-gray-500 bg-opacity-60 fixed right-0 left-0 z-50 justify-center items-center md:inset-0 h-modal sm:h-full"
 	>
-		<div class="flex h-screen mx-auto w-full max-w-md h-full md:h-auto ">
+		<div class="absolute inset-1/4 h-screen mx-auto w-full max-w-md h-full md:h-auto ">
 			<!-- Modal content -->
-			<div class="m-auto container bg-white rounded-lg shadow dark:bg-gray-700">
+			<div class=" m-auto container bg-white rounded-lg shadow dark:bg-gray-700">
 				<!-- Modal header -->
 				<div class="flex justify-end p-2">
 					<button

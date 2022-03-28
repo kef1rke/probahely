@@ -2,6 +2,7 @@
 	import supabase from '$lib/db';
 	import { session } from '$app/stores';
 	import { onMount } from 'svelte';
+	import Modal from '../components/modal.svelte';
 
 	let zenekarNumber, userData;
 	let promise = userData;
@@ -221,3 +222,10 @@
 		</div>
 	</div>
 </div>
+
+<!-- Delete modal -->
+<Modal>
+	<h2 class="text-center mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+		Biztosan kitörli
+	</h2>
+</Modal>
