@@ -3,20 +3,20 @@
 	import { session } from '$app/stores';
 	import { onMount } from 'svelte';
 
-	let userNumber;
+	let userNumber, zenekarNumber;
 
 	async function getUserNumber() {
 		const { data, error } = await supabase.from('users').select('*');
-		userNumber = data;
-		console.log(userNumber);
+		userNumber = data.length;
 	}
-	/*async function test() {
-		const session = supabase.auth.session();
-		console.log(session);
-	}*/
+	async function getZenekarNumber() {
+		const { data, error } = await supabase.from('Zenekarok').select('*');
+		zenekarNumber = data.length;
+	}
+
 	onMount(() => {
 		getUserNumber();
-		//test();
+		getZenekarNumber();
 	});
 </script>
 
@@ -43,7 +43,7 @@
 					</div>
 					<div class="mx-4">
 						<h4 class="text-2xl font-semibold text-gray-700">{userNumber}</h4>
-						<div class="text-gray-500">All Users</div>
+						<div class="text-gray-500">Felhasználók</div>
 					</div>
 				</div>
 				<div class="flex items-center px-4 py-6 bg-white rounded-md shadow-md">
@@ -68,8 +68,8 @@
 						</svg>
 					</div>
 					<div class="mx-4">
-						<h4 class="text-2xl font-semibold text-gray-700">30</h4>
-						<div class="text-gray-500">All Blogs</div>
+						<h4 class="text-2xl font-semibold text-gray-700">{zenekarNumber}</h4>
+						<div class="text-gray-500">Zenekarok</div>
 					</div>
 				</div>
 				<div class="flex items-center px-4 py-6 bg-white rounded-md shadow-md">
