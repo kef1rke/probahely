@@ -10,7 +10,7 @@
 	}
 </script>
 
-<div class="flex h-screen">
+<div class="flex h-full">
 	<div class="px-4 py-2 bg-gray-200 bg-indigo-600 lg:w-1/4">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

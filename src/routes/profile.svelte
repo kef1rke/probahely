@@ -7,17 +7,16 @@
 	let zenekarNev;
 
 	async function getUserData() {
-		const { data, error } = await supabase.from('users');
+		const { data, error } = await supabase
+			.from('users')
+			.select('id, email, zenesz_nev, profile_picture_url, Zenekarok(zenekar_nev)')
+			.order('zenesz_nev')
+			.eq('id', supabase.auth.user().id);
 		user = await data[0];
 	}
-	async function getZenekarNev() {
-		const { data, error } = await supabase.from('users').select('Zenekarok(zenekar_nev)');
-		zenekarNev = data[0].Zenekarok.zenekar_nev;
-		console.log(zenekarNev);
-	}
+
 	onMount(() => {
 		getUserData();
-		getZenekarNev();
 	});
 </script>
 
@@ -32,7 +31,7 @@
 
 		<div class="text-center mt-2 text-3xl font-medium">{user?.zenesz_nev}</div>
 
-		<div class="text-center font-normal text-lg">{zenekarNev}</div>
+		<div class="text-center font-normal text-lg">{user?.Zenekarok.zenekar_nev}</div>
 		<div class="px-6 text-center mt-2 font-light text-sm">
 			<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
 		</div>

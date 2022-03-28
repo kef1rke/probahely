@@ -4,6 +4,7 @@
 	import supabase from '$lib/db';
 	import { browser } from '$app/env';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import Header from '../components/header.svelte';
 
 	if (browser) {
@@ -19,6 +20,8 @@
 </script>
 
 <div class="h-screen bg-gray-200">
-	<Header />
+	{#if $page.url.pathname != '/admin'}
+		<Header />
+	{/if}
 	<slot />
 </div>

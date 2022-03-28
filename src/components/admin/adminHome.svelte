@@ -12,7 +12,6 @@
 			.select('email, zenesz_nev, profile_picture_url, Zenekarok(zenekar_nev)')
 			.order('zenesz_nev');
 		userData = data;
-		console.log(userData);
 	}
 	async function getZenekarNumber() {
 		const { data, error } = await supabase.from('Zenekarok').select('*');
@@ -25,7 +24,7 @@
 	});
 </script>
 
-<div class="flex h-screen">
+<div class="flex h-full">
 	<div class="w-full px-4 py-2 bg-gray-200 lg:w-full">
 		<div class="container mx-auto mt-12">
 			<div class="grid gap-4 lg:grid-cols-3">
