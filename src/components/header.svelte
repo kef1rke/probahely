@@ -58,7 +58,7 @@
 			<a href="/" class="mr-5 hover:text-gray-900">Kapcsolat</a>
 			<a href="/idopontfoglalas" class="mr-5 hover:text-gray-900">Időpontfoglalás</a>
 		</nav>
-		{#if $session}
+		{#if $session != null}
 			<div class="relative z-10" bind:this={menu}>
 				<div>
 					<button
