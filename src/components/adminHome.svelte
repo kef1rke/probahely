@@ -5,13 +5,12 @@
 	import Modal from '../components/modal.svelte';
 
 	let zenekarNumber, userData;
-	let promise = userData;
 	let isOpen;
 
 	async function getUserData() {
 		const { data, error } = await supabase
 			.from('users')
-			.select('email, zenesz_nev, profile_picture_url, Zenekarok(zenekar_nev)')
+			.select('id, email, zenesz_nev, profile_picture_url, Zenekarok(zenekar_nev)')
 			.order('zenesz_nev');
 		userData = data;
 	}
@@ -24,6 +23,24 @@
 		getUserData();
 		getZenekarNumber();
 	});
+
+	let rowToDelete;
+
+	function deleteRow(rowToBeDeleted) {
+		rowToDelete = userData;
+		let difference = userData.filter((row) => row != rowToBeDeleted);
+		rowToDelete = userData.filter((x) => !difference.includes(x))[0];
+		isOpen = true;
+		//console.log(rowToDelete);
+	}
+
+	async function deleteUser() {
+		const { data: user, error } = await supabase.auth.api.deleteUser(rowToDelete.id);
+		if (error) {
+			alert(error.message);
+		}
+		console.log(error);
+	}
 </script>
 
 <div class="flex h-full">
@@ -141,7 +158,7 @@
 								{#await getUserData()}
 									<h1>Loading..</h1>
 								{:then}
-									{#each userData as data}
+									{#each userData as row}
 										<tr>
 											<td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
 												<div class="flex items-center">
@@ -155,23 +172,23 @@
 
 													<div class="ml-4">
 														<div class="text-sm font-medium leading-5 text-gray-900">
-															{data?.zenesz_nev}
+															{row?.zenesz_nev}
 														</div>
 													</div>
 												</div>
 											</td>
 
 											<td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-												<div class="text-sm leading-5 text-gray-500">{data?.email}</div>
+												<div class="text-sm leading-5 text-gray-500">{row?.email}</div>
 											</td>
 
 											<td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
 												<span
 													class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full"
-													>{#if data.Zenekarok?.zenekar_nev == undefined}
+													>{#if row.Zenekarok?.zenekar_nev == undefined}
 														Nincs zenekar
 													{:else}
-														{data.Zenekarok?.zenekar_nev}
+														{row.Zenekarok?.zenekar_nev}
 													{/if}</span
 												>
 											</td>
@@ -195,6 +212,7 @@
 												</svg>
 											</td>
 											<td
+												on:click={() => deleteRow(row)}
 												class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
 											>
 												<svg
@@ -227,6 +245,23 @@
 <!-- Delete modal -->
 <Modal bind:isOpen>
 	<h2 class="text-center mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-		Biztosan kitörli
+		Biztosan kitörli ezt a fiókot?
 	</h2>
+	<h2 class="text-center mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+		{rowToDelete.email}
+	</h2>
+
+	<button
+		on:click={() => (isOpen = false)}
+		type="button"
+		class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600"
+		>Cancel</button
+	>
+	<button
+		on:click={deleteUser}
+		type="button"
+		class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+	>
+		Törlés!
+	</button>
 </Modal>
