@@ -18,10 +18,15 @@
 		const { data, error } = await supabase.from('Zenekarok').select('*');
 		zenekarNumber = data.length;
 	}
+	async function getUser() {
+		const { data, error } = await supabase.auth.email();
+		console.log(data);
+	}
 
 	onMount(() => {
 		getUserData();
 		getZenekarNumber();
+		getUser();
 	});
 
 	let rowToDelete;
