@@ -3,9 +3,9 @@
 	import { session } from '$app/stores';
 	import { onMount } from 'svelte';
 	import Modal from '../components/modal.svelte';
+	import Abstractmodal, { getModal } from '../components/abstractModal.svelte';
 
 	let zenekarNumber, userData;
-	let isOpen;
 
 	async function getUserData() {
 		const { data, error } = await supabase
@@ -18,25 +18,21 @@
 		const { data, error } = await supabase.from('Zenekarok').select('*');
 		zenekarNumber = data.length;
 	}
-	async function getUser() {
-		const { data, error } = await supabase.auth.email();
-		console.log(data);
-	}
 
 	onMount(() => {
 		getUserData();
 		getZenekarNumber();
-		getUser();
 	});
 
+	// delete user
 	let rowToDelete;
 
 	function deleteRow(rowToBeDeleted) {
 		rowToDelete = userData;
 		let difference = userData.filter((row) => row != rowToBeDeleted);
 		rowToDelete = userData.filter((x) => !difference.includes(x))[0];
-		isOpen = true;
-		//console.log(rowToDelete);
+		getModal('delete').open();
+		console.log(rowToDelete);
 	}
 
 	async function deleteUser() {
@@ -44,7 +40,17 @@
 		if (error) {
 			alert(error.message);
 		}
-		console.log(error);
+		//console.log(error);
+	}
+
+	// Edit user
+	let rowToEdit;
+	function editRow(rowToBeEdited) {
+		rowToEdit = userData;
+		let difference = userData.filter((row) => row != rowToBeEdited);
+		rowToEdit = userData.filter((x) => !difference.includes(x))[0];
+		getModal('edit').open();
+		//console.log(rowToEdit);
 	}
 </script>
 
@@ -199,7 +205,9 @@
 											</td>
 
 											<td
-												class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
+												on:click={() => editRow(row)}
+												class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b
+												border-gray-200"
 											>
 												<svg
 													xmlns="http://www.w3.org/2000/svg"
@@ -248,7 +256,7 @@
 </div>
 
 <!-- Delete modal -->
-<Modal bind:isOpen>
+<Abstractmodal id="delete">
 	<h2 class="text-center mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 		Biztosan kitörli ezt a fiókot?
 	</h2>
@@ -257,7 +265,7 @@
 	</h2>
 
 	<button
-		on:click={() => (isOpen = false)}
+		on:click={() => getModal().close()}
 		type="button"
 		class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600"
 		>Cancel</button
@@ -269,4 +277,8 @@
 	>
 		Törlés!
 	</button>
-</Modal>
+</Abstractmodal>
+
+<Abstractmodal id="edit">
+	<h2>{rowToEdit}</h2>
+</Abstractmodal>

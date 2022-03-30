@@ -20,8 +20,6 @@
 </script>
 
 <div class="h-screen bg-gray-200">
-	{#if $page.url.pathname != '/admin'}
-		<Header />
-	{/if}
+	<Header />
 	<slot />
 </div>
