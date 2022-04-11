@@ -19,7 +19,9 @@
 	}
 </script>
 
-<div class="h-screen bg-gray-200">
-	<Header />
+<div class="min-h-screen bg-gray-200">
+	{#if $page.url.pathname != '/admin'}
+		<Header />
+	{/if}
 	<slot />
 </div>

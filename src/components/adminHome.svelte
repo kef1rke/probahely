@@ -13,6 +13,7 @@
 			.select('id, email, zenesz_nev, profile_picture_url, Zenekarok(zenekar_nev)')
 			.order('zenesz_nev');
 		userData = data;
+		console.log(userData);
 	}
 	async function getZenekarNumber() {
 		const { data, error } = await supabase.from('Zenekarok').select('*');
@@ -29,10 +30,9 @@
 
 	function deleteRow(rowToBeDeleted) {
 		rowToDelete = userData;
-		let difference = userData.filter((row) => row != rowToBeDeleted);
-		rowToDelete = userData.filter((x) => !difference.includes(x))[0];
+		let difference = userData.find((row) => row === rowToBeDeleted);
 		getModal('delete').open();
-		console.log(rowToDelete);
+		//console.log(rowToDelete);
 	}
 
 	async function deleteUser() {
@@ -43,18 +43,25 @@
 		//console.log(error);
 	}
 
-	// Edit user
 	let rowToEdit;
-	function editRow(rowToBeEdited) {
-		rowToEdit = userData;
-		let difference = userData.filter((row) => row != rowToBeEdited);
-		rowToEdit = userData.filter((x) => !difference.includes(x))[0];
+	function editRow(userId) {
+		let rowToEdit = userData.find((row) => row.id === userId);
 		getModal('edit').open();
-		//console.log(rowToEdit);
+		getEditUser();
 	}
+	let editUser;
+
+	async function getEditUser() {
+		// const { data, error } = await supabase.from('users').select('*').eq('id', rowToEdit.id);
+		editUser = data[0];
+		eName = editUser?.zenesz_nev;
+		eEmail = editUser?.email;
+		console.log(editUser);
+	}
+	let eName, eEmail, ePhone, ePicture;
 </script>
 
-<div class="flex h-full">
+<div class="flex min-h-screen">
 	<div class="w-full px-4 py-2 bg-gray-200 lg:w-full">
 		<div class="container mx-auto mt-12">
 			<div class="grid gap-4 lg:grid-cols-3">
@@ -205,7 +212,7 @@
 											</td>
 
 											<td
-												on:click={() => editRow(row)}
+												on:click={() => editRow(row.id)}
 												class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b
 												border-gray-200"
 											>
@@ -261,14 +268,14 @@
 		Biztosan kitörli ezt a fiókot?
 	</h2>
 	<h2 class="text-center mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-		{rowToDelete.email}
+		{rowToDelete?.email}
 	</h2>
 
 	<button
 		on:click={() => getModal().close()}
 		type="button"
 		class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600"
-		>Cancel</button
+		>Vissza</button
 	>
 	<button
 		on:click={deleteUser}
@@ -279,6 +286,38 @@
 	</button>
 </Abstractmodal>
 
+<!-- Edit modal -->
 <Abstractmodal id="edit">
-	<h2>{rowToEdit}</h2>
+	<h2 class="text-center mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+		{rowToEdit?.email} Szerkesztése
+	</h2>
+
+	<input
+		type="name"
+		name="Name"
+		placeholder="Name"
+		bind:value={eName}
+		class=" appearance-none block w-full px-3 py-2 my-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-gray-700 focus:border-gray-500 focus:z-10 sm:text-sm"
+	/>
+	<input
+		type="email"
+		name="Email"
+		placeholder="Email address"
+		bind:value={eEmail}
+		class=" appearance-none block w-full px-3 py-2 my-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-gray-700 focus:border-gray-500 focus:z-10 sm:text-sm"
+	/>
+
+	<button
+		on:click={() => getModal().close()}
+		type="button"
+		class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600"
+		>Vissza</button
+	>
+	<button
+		on:click={deleteUser}
+		type="button"
+		class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+	>
+		Szerkesztés
+	</button>
 </Abstractmodal>
