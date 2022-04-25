@@ -1,6 +1,5 @@
 <script>
 	import supabase from '$lib/db';
-	import { session } from '$app/stores';
 	import { onMount } from 'svelte';
 	import Modal from '../components/modal.svelte';
 	import Abstractmodal, { getModal } from '../components/abstractModal.svelte';
@@ -13,7 +12,6 @@
 			.select('id, email, zenesz_nev, profile_picture_url, Zenekarok(zenekar_nev)')
 			.order('zenesz_nev');
 		userData = data;
-		console.log(userData);
 	}
 	async function getZenekarNumber() {
 		const { data, error } = await supabase.from('Zenekarok').select('*');
@@ -32,7 +30,6 @@
 		rowToDelete = userData;
 		let difference = userData.find((row) => row === rowToBeDeleted);
 		getModal('delete').open();
-		//console.log(rowToDelete);
 	}
 
 	async function deleteUser() {
@@ -40,7 +37,6 @@
 		if (error) {
 			alert(error.message);
 		}
-		//console.log(error);
 	}
 
 	let rowToEdit;
@@ -56,7 +52,6 @@
 		editUser = data[0];
 		eName = editUser?.zenesz_nev;
 		eEmail = editUser?.email;
-		console.log(editUser);
 	}
 	let eName, eEmail, ePhone, ePicture;
 </script>

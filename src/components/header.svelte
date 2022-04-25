@@ -1,13 +1,13 @@
 <script>
 	import Button from '../components/button.svelte';
-	import { session } from '$app/stores';
-	import { signOut } from '$lib/services';
-
 	import { onMount } from 'svelte';
 	import { scale } from 'svelte/transition';
 
 	let show = false; // menu state
 	let menu = null; // menu wrapper DOM reference
+
+	import { page } from '$app/stores';
+	export let session;
 
 	onMount(() => {
 		const handleOutsideClick = (event) => {
@@ -32,6 +32,15 @@
 			document.removeEventListener('keyup', handleEscape, false);
 		};
 	});
+
+	async function logout(e) {
+		const response = await fetch('/logout', {
+			method: 'post',
+			body: new FormData(e.target)
+		});
+		if (response.ok) window.location = '/';
+		else alert(await response.text());
+	}
 </script>
 
 <header class="text-gray-600 body-font">
@@ -54,9 +63,13 @@
 		<nav
 			class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400	flex flex-wrap items-center text-base justify-center"
 		>
-			<a href="/About" class="mr-5 hover:text-gray-900">Rólunk</a>
-			<a href="/" class="mr-5 hover:text-gray-900">Kapcsolat</a>
-			<a href="/idopontfoglalas" class="mr-5 hover:text-gray-900">Időpontfoglalás</a>
+			<a class="mr-5 hover:text-gray-900" class:active={$page.url.path === '/'} href="/">Home</a>
+			<a class="mr-5 hover:text-gray-900" class:active={$page.url.path === '/about'} href="/about"
+				>Rólunk</a
+			>
+			<a class:active={$page.url.path === '/idopontfoglalas'} href="/idopontfoglalas"
+				>Időpontfoglalás</a
+			>
 		</nav>
 		{#if $session != null}
 			<div class="relative z-10" bind:this={menu}>
@@ -82,9 +95,8 @@
 							<button class="block w-full text-white px-4 py-2 hover:bg-gray-500 "
 								><a href="/profile">Profile</a></button
 							>
-							<button
-								on:click={signOut}
-								class="block w-full px-4 py-2 text-white hover:bg-gray-500 ">Logout</button
+							<button on:click={logout} class="block w-full px-4 py-2 text-white hover:bg-gray-500 "
+								>Logout</button
 							>
 						</div>
 					{/if}

@@ -1,8 +1,17 @@
 <script>
-	import supabase from '$lib/db';
-	import Header from '../components/header.svelte';
-	import { signOut } from '$lib/services';
-	import { session } from '$app/stores';
-	import ModalClock from '../components/modalClock.svelte';
-	let showModal = true; // toggles the hide/show modal mode
+	export async function load({ url, params, fetch, session, context }) {
+		if (!session) {
+			return {};
+		}
+		return {
+			props: {
+				session
+			}
+		};
+	}
 </script>
+
+<h1>Home</h1>
+<form action="/logout" method="get">
+	<button> Log out </button>
+</form>

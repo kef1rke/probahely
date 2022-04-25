@@ -53,6 +53,7 @@
 				(await import('@fullcalendar/interaction')).default
 			]
 		};
+		fetchUserDetails();
 	});
 
 	//foglalás
@@ -71,8 +72,10 @@
 	let foglalas_ig;
 	let zenekari_foglalas = false;
 	let foglalasError = null;
+	async function getUser() {
+		const { data, error } = await supabase.from('users').eq('foglalas_date', selectedDate);
+	}
 
-	const user = supabase.auth.user();
 	async function createFoglalas() {
 		foglalasError = null;
 		if (!(foglalas_tol < foglalas_ig)) {
@@ -84,18 +87,20 @@
 					foglalas_date: date,
 					foglalas_tol: foglalas_tol,
 					foglalas_ig: foglalas_ig,
-					user_id: user.id,
+					user_id: await supabase.auth.user().id,
 					zenekar_id: await getZenekarid(),
 					zenekari_foglalas: zenekari_foglalas,
 					foglalo_nev: await getFoglaloNev()
 				}
 			]);
+
 			isOpen = false;
 		}
 	}
 
 	async function getZenekarid() {
 		const { data, error } = await supabase.from('users').select('zenekar_id');
+		console.log('getZenekarid:', data[0].zenekar_id);
 		return data[0].zenekar_id;
 	}
 	async function getFoglaloNev() {
