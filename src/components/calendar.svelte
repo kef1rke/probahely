@@ -4,13 +4,15 @@
 	import supabase from '$lib/db';
 	import Modal from '../components/modal.svelte';
 
+	export let session;
+
 	let modal;
 	let isOpen = false;
 	// data from database
-	async function getJson(fetchInfo, successCallback, errorCallback) {
+	async function getJson() {
 		const { data, error } = await supabase
 			.from('Foglalasok')
-			.select('date:foglalas_date, title:foglalo_nev')
+			.select('start:foglalas_tol, end:foglalas_ig, title:foglalo_nev')
 			.order('foglalas_tol', { ascending: true });
 		return data;
 	}
@@ -47,6 +49,7 @@
 			},
 			selectable: true,
 			events: getJson,
+			timeFormat: 'H(:mm)',
 			plugins: [
 				(await import('@fullcalendar/daygrid')).default,
 				(await import('@fullcalendar/timegrid')).default,
@@ -72,8 +75,10 @@
 	let foglalas_ig;
 	let zenekari_foglalas = false;
 	let foglalasError = null;
+
 	async function getUser() {
-		const { data, error } = await supabase.from('users').eq('foglalas_date', selectedDate);
+		const { data, error } = await supabase.from('users').select('*').eq('email', session);
+		return data;
 	}
 
 	async function createFoglalas() {
@@ -82,17 +87,21 @@
 			foglalasError = 'Érvényes időintervallumot adjon meg!';
 		}
 		if (foglalasError == null) {
-			const { data, error } = await supabase.from('Foglalasok').insert([
-				{
-					foglalas_date: date,
-					foglalas_tol: foglalas_tol,
-					foglalas_ig: foglalas_ig,
-					user_id: await supabase.auth.user().id,
-					zenekar_id: await getZenekarid(),
-					zenekari_foglalas: zenekari_foglalas,
-					foglalo_nev: await getFoglaloNev()
-				}
-			]);
+			console.log(foglalas_tol);
+			const { data, error } = await supabase.from('Foglalasok').insert(
+				[
+					{
+						foglalas_date: date,
+						foglalas_tol: '2022-04-26 10:00:00',
+						foglalas_ig: '2022-04-26 11:00:00',
+						user_id: getUser().id,
+						zenekar_id: await getZenekarid(),
+						zenekari_foglalas: zenekari_foglalas,
+						foglalo_nev: await getFoglaloNev()
+					}
+				],
+				{ returning: 'minimal' }
+			);
 
 			isOpen = false;
 		}
@@ -100,7 +109,6 @@
 
 	async function getZenekarid() {
 		const { data, error } = await supabase.from('users').select('zenekar_id');
-		console.log('getZenekarid:', data[0].zenekar_id);
 		return data[0].zenekar_id;
 	}
 	async function getFoglaloNev() {

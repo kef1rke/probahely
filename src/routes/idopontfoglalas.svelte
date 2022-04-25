@@ -16,6 +16,7 @@
 
 <script>
 	import Calendar from '../components/calendar.svelte';
+	export let session;
 </script>
 
-<Calendar />
+<Calendar bind:session />

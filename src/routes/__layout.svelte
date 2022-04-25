@@ -10,7 +10,6 @@
 
 <script>
 	import '../app.css';
-	import { page } from '$app/stores';
 	import Header from '../components/header.svelte';
 
 	export let session;
@@ -22,5 +21,5 @@
 	<slot />
 </div>
 <pre>
-	session = {JSON.stringify(session, null, 2)}
+	session = {session}
 </pre>
