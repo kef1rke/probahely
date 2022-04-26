@@ -67,11 +67,13 @@
 			<a class="mr-5 hover:text-gray-900" class:active={$page.url.path === '/about'} href="/about"
 				>Rólunk</a
 			>
-			<a class:active={$page.url.path === '/idopontfoglalas'} href="/idopontfoglalas"
-				>Időpontfoglalás</a
+			<a
+				class="mr-5 hover:text-gray-900"
+				class:active={$page.url.path === '/idopontfoglalas'}
+				href="/idopontfoglalas">Időpontfoglalás</a
 			>
 		</nav>
-		{#if $session != null}
+		{#if session != null}
 			<div class="relative z-10" bind:this={menu}>
 				<div>
 					<button
@@ -95,15 +97,19 @@
 							<button class="block w-full text-white px-4 py-2 hover:bg-gray-500 "
 								><a href="/profile">Profile</a></button
 							>
-							<button on:click={logout} class="block w-full px-4 py-2 text-white hover:bg-gray-500 "
-								>Logout</button
-							>
+							<form action="/logout" method="get">
+								<button class="block w-full px-4 py-2 text-white hover:bg-gray-500 ">Logout</button>
+							</form>
 						</div>
 					{/if}
 				</div>
 			</div>
 		{:else}
-			<Button href="/login">Bejelentkezés</Button>
+			<button
+				class="text-white bg-gray-500 border-0 py-2 px-8 focus:outline-none hover:bg-gray-400 rounded text-lg"
+			>
+				<a class:active={$page.url.path === '/login'} href="/login">Bejelentkezés</a>
+			</button>
 		{/if}
 	</div>
 </header>

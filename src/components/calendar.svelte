@@ -40,9 +40,9 @@
 				week: 'Hét',
 				day: 'Nap'
 			},
-			eventClick: async (event) => {
-				foglalas(event);
-			},
+			// eventClick: async (event) => {
+			// 	foglalas(event);
+			// },
 			dateClick: async (event) => {
 				foglalas(event);
 			},
@@ -83,6 +83,15 @@
 	async function createFoglalas() {
 		const dateOptions = { timeZone: 'UTC+2' };
 		foglalasError = null;
+		const { data, error } = await supabase
+			.from('Foglalasok')
+			.select('foglalas_tol, foglalas_ig')
+			.order('foglalas_tol', { ascending: true });
+		for (let i = 0; i < data.length; i++) {
+			if (data[i].foglalas_tol < foglalas_tol && data[i].foglalas_tol > foglalas_tol) {
+				foglalasError = 'Az időpont már foglalt';
+			}
+		}
 		if (!(foglalas_tol < foglalas_ig)) {
 			foglalasError = 'Érvényes időintervallumot adjon meg!';
 		}
@@ -102,8 +111,13 @@
 				],
 				{ returning: 'minimal' }
 			);
+			if (error) {
+				alert(error.message);
+			} else {
+				alert('Sikeres foglalás!');
+				location.reload();
+			}
 			isOpen = false;
-			console.log(new Date(date + ' ' + foglalas_ig).toLocaleDateString(dateOptions));
 		}
 	}
 

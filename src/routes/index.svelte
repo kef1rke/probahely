@@ -12,6 +12,3 @@
 </script>
 
 <h1>Home</h1>
-<form action="/logout" method="get">
-	<button> Log out </button>
-</form>

@@ -16,7 +16,7 @@
 </script>
 
 <div class="min-h-screen bg-gray-200">
-	<Header />
+	<Header bind:session />
 
 	<slot />
 </div>
