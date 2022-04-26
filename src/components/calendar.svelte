@@ -40,9 +40,6 @@
 				week: 'Hét',
 				day: 'Nap'
 			},
-			// eventClick: async (event) => {
-			// 	foglalas(event);
-			// },
 			dateClick: async (event) => {
 				foglalas(event);
 			},
@@ -54,7 +51,6 @@
 				(await import('@fullcalendar/interaction')).default
 			]
 		};
-		// fetchUserDetails();
 	});
 
 	//foglalás
@@ -79,38 +75,13 @@
 	}
 
 	async function createFoglalas() {
-		//const dateOptions = { timeZone: 'UTC+2' };
 		foglalasError = null;
 		let foglalasokArray = [];
 		const { data, error } = await supabase
 			.from('Foglalasok')
 			.select('foglalas_tol, foglalas_ig')
 			.order('foglalas_tol', { ascending: true });
-
-		// for (let i = 0; i < data.length; i++) {
-		// 	let sTol = new Date(data[i].foglalas_tol);
-		// 	let sIg = new Date(data[i].foglalas_ig);
-		// 	let sArray = [];
-		// 	let minutes =
-		// 		sIg.getHours() * 60 + sIg.getMinutes() - (sTol.getHours() * 60 + sTol.getMinutes());
-		// 	for (let j = 0; j < minutes; j++) {
-		// 		sArray.push(sTol.getTime() + j * 60000);
-		// 	}
-		// 	foglalasokArray.push(sArray);
-		// }
-
-		// foglalasokArray.forEach((row) => {
-		// 	row.forEach((e) => {
-		// 		console.log(e);
-		// 		if (new Date(date + ' ' + foglalas_tol).getTime() == e) {
-		// 			foglalasError = 'Az időpont foglalt';
-		// 		}
-		// 	});
-		// });
-		//console.log(data);
 		for (let i = 0; i < data.length; i++) {
-			console.log(new Date(data[i].foglalas_tol));
-			console.log(new Date(date + 'T' + foglalas_tol));
 			if (
 				new Date(data[i].foglalas_tol).getTime() < new Date(date + 'T' + foglalas_tol).getTime() &&
 				new Date(data[i].foglalas_ig).getTime() > new Date(date + 'T' + foglalas_tol).getTime()
