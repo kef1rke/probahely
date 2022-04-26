@@ -6,7 +6,6 @@
 
 	export let session;
 
-	let modal;
 	let isOpen = false;
 	// data from database
 	async function getJson() {
@@ -56,12 +55,13 @@
 				(await import('@fullcalendar/interaction')).default
 			]
 		};
-		fetchUserDetails();
+		// fetchUserDetails();
 	});
 
 	//foglalás
 	async function foglalas(event) {
 		selectedDate = await event.dateStr;
+		console.log(selectedDate);
 		const { data, error } = await supabase
 			.from('Foglalasok')
 			.select('foglalas_tol, foglalas_ig, foglalo_nev')
@@ -75,13 +75,13 @@
 	let foglalas_ig;
 	let zenekari_foglalas = false;
 	let foglalasError = null;
-
-	async function getUser() {
+	async function getUserId() {
 		const { data, error } = await supabase.from('users').select('*').eq('email', session);
-		return data;
+		return data[0].id;
 	}
 
 	async function createFoglalas() {
+		const dateOptions = { timeZone: 'UTC+2' };
 		foglalasError = null;
 		if (!(foglalas_tol < foglalas_ig)) {
 			foglalasError = 'Érvényes időintervallumot adjon meg!';
@@ -92,9 +92,9 @@
 				[
 					{
 						foglalas_date: date,
-						foglalas_tol: '2022-04-26 10:00:00',
-						foglalas_ig: '2022-04-26 11:00:00',
-						user_id: getUser().id,
+						foglalas_tol: new Date(date + ' ' + foglalas_tol + 'Z'),
+						foglalas_ig: new Date(date + ' ' + foglalas_ig + 'Z'),
+						user_id: await getUserId(),
 						zenekar_id: await getZenekarid(),
 						zenekari_foglalas: zenekari_foglalas,
 						foglalo_nev: await getFoglaloNev()
@@ -102,24 +102,37 @@
 				],
 				{ returning: 'minimal' }
 			);
-
 			isOpen = false;
+			console.log(new Date(date + ' ' + foglalas_ig).toLocaleDateString(dateOptions));
 		}
 	}
 
 	async function getZenekarid() {
-		const { data, error } = await supabase.from('users').select('zenekar_id');
+		const { data, error } = await supabase.from('users').select('zenekar_id').eq('email', session);
 		return data[0].zenekar_id;
 	}
 	async function getFoglaloNev() {
 		if (zenekari_foglalas == true) {
-			const { data, error } = await supabase.from('Zenekarok').select('zenekar_nev');
+			const { data, error } = await supabase
+				.from('Zenekarok')
+				.select('zenekar_nev')
+				.eq('users(email)', session);
 			return data[0].zenekar_nev;
 		} else {
-			const { data, error } = await supabase.from('users').select('zenesz_nev');
+			const { data, error } = await supabase
+				.from('users')
+				.select('zenesz_nev')
+				.eq('email', session);
 			return data[0].zenesz_nev;
 		}
 	}
+
+	let foglalasTol = (event) => {
+		let foglalas_tol = event.detail;
+	};
+	let foglalasIg = (event) => {
+		let foglalas_ig = event.detail;
+	};
 </script>
 
 <section class="py-8">
@@ -154,7 +167,7 @@
 
 	{#each eventsInColumn as data}
 		<h3 class="text-center mb-1 font-normal text-gray-700 ">
-			{data.foglalo_nev}: {data.foglalas_tol} - {data.foglalas_ig}
+			{data.foglalo_nev}: {data.foglalas_tol.split('T')[1]} - {data.foglalas_ig.split('T')[1]}
 		</h3>
 	{/each}
 
@@ -165,15 +178,17 @@
 			<input
 				type="time"
 				bind:value={foglalas_tol}
+				step="900"
 				required
-				class=" appearance-none block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-gray-700 focus:border-gray-500 focus:z-10 sm:text-sm"
+				class="appearance-none block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-gray-700 focus:border-gray-500 focus:z-10 sm:text-sm"
 			/>
 
 			<input
 				type="time"
 				bind:value={foglalas_ig}
+				step="900"
 				required
-				class=" float-right appearance-none block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-gray-700 focus:border-gray-500 focus:z-10 sm:text-sm"
+				class="float-right appearance-none block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-gray-700 focus:border-gray-500 focus:z-10 sm:text-sm"
 			/>
 		</div>
 
