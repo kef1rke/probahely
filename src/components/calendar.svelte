@@ -48,7 +48,6 @@
 			},
 			selectable: true,
 			events: getJson,
-			timeFormat: 'H(:mm)',
 			plugins: [
 				(await import('@fullcalendar/daygrid')).default,
 				(await import('@fullcalendar/timegrid')).default,
@@ -61,7 +60,6 @@
 	//foglalás
 	async function foglalas(event) {
 		selectedDate = await event.dateStr;
-		console.log(selectedDate);
 		const { data, error } = await supabase
 			.from('Foglalasok')
 			.select('foglalas_tol, foglalas_ig, foglalo_nev')
@@ -81,14 +79,54 @@
 	}
 
 	async function createFoglalas() {
-		const dateOptions = { timeZone: 'UTC+2' };
+		//const dateOptions = { timeZone: 'UTC+2' };
 		foglalasError = null;
+		let foglalasokArray = [];
 		const { data, error } = await supabase
 			.from('Foglalasok')
 			.select('foglalas_tol, foglalas_ig')
 			.order('foglalas_tol', { ascending: true });
+
+		// for (let i = 0; i < data.length; i++) {
+		// 	let sTol = new Date(data[i].foglalas_tol);
+		// 	let sIg = new Date(data[i].foglalas_ig);
+		// 	let sArray = [];
+		// 	let minutes =
+		// 		sIg.getHours() * 60 + sIg.getMinutes() - (sTol.getHours() * 60 + sTol.getMinutes());
+		// 	for (let j = 0; j < minutes; j++) {
+		// 		sArray.push(sTol.getTime() + j * 60000);
+		// 	}
+		// 	foglalasokArray.push(sArray);
+		// }
+
+		// foglalasokArray.forEach((row) => {
+		// 	row.forEach((e) => {
+		// 		console.log(e);
+		// 		if (new Date(date + ' ' + foglalas_tol).getTime() == e) {
+		// 			foglalasError = 'Az időpont foglalt';
+		// 		}
+		// 	});
+		// });
+		//console.log(data);
 		for (let i = 0; i < data.length; i++) {
-			if (data[i].foglalas_tol < foglalas_tol && data[i].foglalas_tol > foglalas_tol) {
+			console.log(new Date(data[i].foglalas_tol));
+			console.log(new Date(date + 'T' + foglalas_tol));
+			if (
+				new Date(data[i].foglalas_tol).getTime() < new Date(date + 'T' + foglalas_tol).getTime() &&
+				new Date(data[i].foglalas_ig).getTime() > new Date(date + 'T' + foglalas_tol).getTime()
+			) {
+				foglalasError = 'Az időpont már foglalt';
+			}
+			if (
+				new Date(data[i].foglalas_tol).getTime() < new Date(date + 'T' + foglalas_ig).getTime() &&
+				new Date(data[i].foglalas_ig).getTime() > new Date(date + 'T' + foglalas_ig).getTime()
+			) {
+				foglalasError = 'Az időpont már foglalt';
+			}
+			if (
+				new Date(data[i].foglalas_tol).getTime() == new Date(date + 'T' + foglalas_tol).getTime() &&
+				new Date(data[i].foglalas_ig).getTime() == new Date(date + 'T' + foglalas_ig).getTime()
+			) {
 				foglalasError = 'Az időpont már foglalt';
 			}
 		}
@@ -96,7 +134,6 @@
 			foglalasError = 'Érvényes időintervallumot adjon meg!';
 		}
 		if (foglalasError == null) {
-			console.log(foglalas_tol);
 			const { data, error } = await supabase.from('Foglalasok').insert(
 				[
 					{
@@ -181,7 +218,13 @@
 
 	{#each eventsInColumn as data}
 		<h3 class="text-center mb-1 font-normal text-gray-700 ">
-			{data.foglalo_nev}: {data.foglalas_tol.split('T')[1]} - {data.foglalas_ig.split('T')[1]}
+			{data.foglalo_nev}: {new Date(data.foglalas_tol).toLocaleTimeString([], {
+				hour: '2-digit',
+				minute: '2-digit'
+			})} - {new Date(data.foglalas_ig).toLocaleTimeString([], {
+				hour: '2-digit',
+				minute: '2-digit'
+			})}
 		</h3>
 	{/each}
 
@@ -192,7 +235,7 @@
 			<input
 				type="time"
 				bind:value={foglalas_tol}
-				step="900"
+				step="300"
 				required
 				class="appearance-none block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-gray-700 focus:border-gray-500 focus:z-10 sm:text-sm"
 			/>
@@ -200,7 +243,7 @@
 			<input
 				type="time"
 				bind:value={foglalas_ig}
-				step="900"
+				step="300"
 				required
 				class="float-right appearance-none block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-gray-700 focus:border-gray-500 focus:z-10 sm:text-sm"
 			/>
