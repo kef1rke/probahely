@@ -46,7 +46,7 @@
 					</li>
 				{/each}
 				<li class="mb-2 rounded hover:shadow hover:bg-gray-800">
-					<a role="tab" href="/home">
+					<a role="tab" href="/">
 						<button class="w-full text-left px-3 py-2 font-bold text-white"
 							>Go back to website</button
 						></a

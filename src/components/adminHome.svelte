@@ -1,7 +1,6 @@
 <script>
 	import supabase from '$lib/db';
 	import { onMount } from 'svelte';
-	import Modal from '../components/modal.svelte';
 	import Abstractmodal, { getModal } from '../components/abstractModal.svelte';
 
 	let zenekarNumber, userData;
