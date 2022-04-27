@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import supabase from '$lib/db';
+	import { scale } from 'svelte/transition';
 
 	export let session;
 
@@ -62,7 +63,9 @@
 				</button>
 				<!-- Dropdown menu -->
 				<div
-					class="hidden z-50 my-4 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+					in:scale={{ duration: 90, start: 0.95 }}
+					out:scale={{ duration: 75, start: 0.95 }}
+					class="hidden z-50 my-4 text-base list-none bg-gray-100 rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
 					id="dropdown"
 				>
 					<div class="py-3 px-4">
@@ -75,21 +78,21 @@
 						<li>
 							<a
 								href="/profile"
-								class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+								class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-300 hover:rounded dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
 								>Profil</a
 							>
 						</li>
 						<li>
 							<a
 								href="#"
-								class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+								class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-300 hover:rounded dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
 								>Settings</a
 							>
 						</li>
 						<li>
 							<a
 								href="#"
-								class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+								class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-300 hover:rounded dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
 								>Earnings</a
 							>
 						</li>
@@ -97,7 +100,7 @@
 							<a
 								href="/logout"
 								method="get"
-								class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+								class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-300 hover:rounded dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
 								>Sign out</a
 							>
 						</li>
@@ -191,7 +194,7 @@
 					<a
 						class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
 						class:active={$page.url.path === '/about'}
-						href="/">Rólunk</a
+						href="/about">Rólunk</a
 					>
 				</li>
 				<li>
@@ -206,7 +209,7 @@
 					<a
 						class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
 						class:active={$page.url.path === '/contact'}
-						href="/">Elérhetőség</a
+						href="/contact">Elérhetőség</a
 					>
 				</li>
 			</ul>
