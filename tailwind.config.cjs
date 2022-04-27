@@ -5,7 +5,8 @@ const config = {
 		extend: {}
 	},
 
-	plugins: [require('tw-elements/dist/plugin')]
+	plugins: [require('tw-elements/dist/plugin', 'flowbite/plugin')],
+	darkMode: 'class'
 };
 
 module.exports = config;

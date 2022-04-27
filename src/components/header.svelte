@@ -1,5 +1,4 @@
 <script>
-	import Button from '../components/button.svelte';
 	import { onMount } from 'svelte';
 	import { scale } from 'svelte/transition';
 
