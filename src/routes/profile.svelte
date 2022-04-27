@@ -1,21 +1,40 @@
+<script context="module">
+	export async function load({ url, params, fetch, session, context }) {
+		if (!session) {
+			return {};
+		}
+		return {
+			props: {
+				session
+			}
+		};
+	}
+</script>
+
 <script>
-	import { session } from '$app/stores';
 	import supabase from '$lib/db';
 	import { onMount } from 'svelte';
+
+	export let session;
 
 	let user;
 	let zenekarNev;
 
 	async function getUserData() {
+		const { data: dat, error: err } = await supabase.from('users').select('*').eq('email', session);
+		let userId = dat[0].id;
+
 		const { data, error } = await supabase
 			.from('users')
 			.select('id, email, zenesz_nev, profile_picture_url, Zenekarok(zenekar_nev)')
 			.order('zenesz_nev')
-			.eq('id', supabase.auth.user().id);
+			.eq('id', await userId);
 		user = await data[0];
 	}
 
 	onMount(() => {
+		//getUserId();
+
 		getUserData();
 	});
 </script>
