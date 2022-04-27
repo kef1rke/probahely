@@ -11,7 +11,6 @@
 />
 {#if isOpen}
 	<div
-		on:click={() => (isOpen = false)}
 		class="fixed flex justify-center top-0 bg-gray-300 content-center bg-opacity-50 left-0 right-0 z-50 w-full overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full"
 	>
 		<div class="relative self-center w-full h-full max-w-lg p-4 md:h-auto">
