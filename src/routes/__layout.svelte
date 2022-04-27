@@ -20,6 +20,3 @@
 
 	<slot />
 </div>
-<pre>
-	session = {session}
-</pre>

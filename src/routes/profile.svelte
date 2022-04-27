@@ -1,7 +1,10 @@
 <script context="module">
 	export async function load({ url, params, fetch, session, context }) {
 		if (!session) {
-			return {};
+			return {
+				status: 302,
+				redirect: '/login'
+			};
 		}
 		return {
 			props: {
@@ -33,8 +36,6 @@
 	}
 
 	onMount(() => {
-		//getUserId();
-
 		getUserData();
 	});
 </script>
