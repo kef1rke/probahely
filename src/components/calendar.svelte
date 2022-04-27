@@ -206,7 +206,6 @@
 			<input
 				type="time"
 				bind:value={foglalas_tol}
-				step="300"
 				required
 				class="appearance-none block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-gray-700 focus:border-gray-500 focus:z-10 sm:text-sm"
 			/>
@@ -214,7 +213,6 @@
 			<input
 				type="time"
 				bind:value={foglalas_ig}
-				step="300"
 				required
 				class="float-right appearance-none block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-gray-700 focus:border-gray-500 focus:z-10 sm:text-sm"
 			/>
