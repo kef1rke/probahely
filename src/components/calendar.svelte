@@ -157,8 +157,8 @@
 	};
 </script>
 
-<section class="py-8">
-	<div class="container px-4 mx-auto">
+<section class="flex justify-center py-8 mx-4 md:m-2">
+	<div class="w-full shadow">
 		<div class="relative px-6 pb-6 py-4 bg-white rounded-xl">
 			<div class="mb-6">
 				<h3 class="text-xl font-bold" data-config-id="header2">Chimpull</h3>
