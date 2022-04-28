@@ -24,8 +24,8 @@
 	}
 </script>
 
-<div class="h-full flex items-center justify-center px-4 sm:px-6 lg:px-8">
-	<div class="max-w-md w-full space-y-8">
+<div class="h-screen w-full  flex items-center justify-center px-4 sm:px-6 lg:px-8">
+	<div class="max-w-md bg-white card p-5 rounded-xl shadow w-full space-y-8">
 		<div>
 			<img
 				class="mx-auto h-12 w-auto"

@@ -42,7 +42,7 @@
 
 <!-- component -->
 <div class="font-sans h-screen w-full flex flex-row justify-center items-center">
-	<div class="card w-96 mx-auto bg-white  shadow-xl hover:shadow">
+	<div class="card rounded-xl w-96 mx-auto bg-white  shadow-xl hover:shadow">
 		<img
 			class="w-32 mx-auto rounded-full -mt-20 border-8 border-white"
 			src="https://avatars.githubusercontent.com/u/67946056?v=4"
