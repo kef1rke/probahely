@@ -3,6 +3,20 @@
 	let selected = navOptions[0]; // keep track of the selected 'page' object (default to the about component since we must have local db connection established first)
 	let intSelected = 0; // selected page index
 
+	export async function load({ url, params, fetch, session, context }) {
+		async function getUserData() {
+			const { data: dat, error: err } = await supabase
+				.from('users')
+				.select('*')
+				.eq('email', session);
+			let userId = dat[0].id;
+			const { data, error } = await supabase
+				.from('users')
+				.select('id, email, zenesz_nev, profile_picture_url, Zenekarok(zenekar_nev), user_lvl')
+				.order('zenesz_nev')
+				.eq('id', await userId);
+			return await data[0].user_lvl;
+		}
 		if (!session) {
 			return {
 				status: 302,

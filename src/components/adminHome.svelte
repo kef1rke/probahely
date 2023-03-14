@@ -8,7 +8,7 @@
 	async function getUserData() {
 		const { data, error } = await supabase
 			.from('users')
-			.select('id, email, zenesz_nev, profile_picture_url, Zenekarok(zenekar_nev)')
+			.select('id', 'email', 'zenesz_nev', 'profile_picture_url', 'Zenekarok(zenekar_nev)')
 			.order('zenesz_nev');
 		userData = data;
 	}
@@ -17,8 +17,8 @@
 		zenekarNumber = data.length;
 	}
 
-	onMount(() => {
-		getUserData();
+	onMount(async () => {
+		console.log(getUserData());
 		getZenekarNumber();
 	});
 
